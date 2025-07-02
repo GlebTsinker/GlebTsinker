@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Глеб Цинкер — Персональный тренер</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to bottom right, #0f0f0f, #1a1a1a);
+      color: white;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    section {
+      padding: 60px 20px;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h1, h2 {
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 3.2rem;
+      text-shadow: 0 0 8px rgba(0,0,0,0.7);
+    }
+    h2 {
+      font-size: 2.2rem;
+      background: linear-gradient(to right, #b32e2e, #1e3a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      line-height: 1.6;
+      margin: 0 auto 30px;
+    }
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: url('gleb-bg.PNG') no-repeat center center / cover;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px 20px;
+    }
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .buttons a {
+      min-width: 240px;
+      height: 50px;
+      line-height: 50px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      animation: pulse 2s infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .buttons a.telegram { background: #229ED9; }
+    .buttons a.form { background: #1e3a8a; }
+    .buttons a i { margin-right: 8px; }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+      70% { box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    }
+
+    .floating-img {
+      position: absolute;
+      width: 50px;
+      z-index: 1;
+      animation: float infinite linear;
+      pointer-events: none;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-30px) rotate(15deg); }
+      100% { transform: translateY(0) rotate(0); }
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .feature {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      scroll-snap-type: x mandatory;
+      padding: 20px 0;
+      margin: 30px auto 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+    .carousel-item {
+      flex: 0 0 80%;
+      max-width: 280px;
+      scroll-snap-align: center;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    .carousel-item img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+    .carousel-item p {
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+
+    .counter {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #b32e2e;
+      margin: 20px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #0f0f0f;
+      color: #888;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+      .carousel-item {
+        flex: 0 0 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  for (let i = 0; i < 25; i++) {
+    const img = document.createElement('img');
+    img.src = 'dumbbell.PNG';
+    img.className = 'floating-img';
+    img.style.top = Math.random() * 100 + '%';
+    img.style.left = Math.random() * 100 + '%';
+    img.style.animationDuration = (20 + Math.random() * 10) + 's';
+    img.style.width = (30 + Math.random() * 40) + 'px';
+    img.style.opacity = 0.015 + Math.random() * 0.03;
+    document.body.appendChild(img);
+  }
+</script>
+
+<section class="hero visible">
+  <div class="hero-content">
+    <h1>Глеб Цинкер</h1>
+    <p>Персональный тренер, массажист и мануальный терапевт<br>Онлайн и офлайн · Санкт-Петербург</p>
+    <div class="buttons">
+      <a href="https://t.me/GlebTsinker" class="telegram" target="_blank"><i class="bi bi-telegram"></i> Написать в Telegram</a>
+      <a href="https://docs.google.com/forms/d/1oyz_2E2w8_dSLMUQlNk0MsynqsqXT80NncpXkcuJHqM/edit?pli=1" class="form" target="_blank"><i class="bi bi-pencil-square"></i> Заполнить анкету</a>
+    </div>
+  </div>
+</section>
+
+<section><h2>Обо мне</h2><p>Я — врач по образованию. Более 5 лет помогаю людям восстанавливаться, тренироваться и достигать своих целей.</p></section>
+
+<section><h2>С чем помогу</h2>
+  <div class="features">
+    <div class="feature">📈 Набор массы</div>
+    <div class="feature">🔥 Снижение веса</div>
+    <div class="feature">🧠 Реабилитация</div>
+    <div class="feature">🏋️ Подготовка к силовым видам спорта</div>
+    <div class="feature">💪 Кроссфит и тяжёлая атлетика</div>
+    <div class="feature">💆‍♂️ Спортивный массаж</div>
+  </div>
+</section>
+
+<section><h2>Формат работы</h2>
+<p>Онлайн по всему миру или офлайн в Санкт-Петербурге. Полный контроль, обратная связь, индивидуальный подход.</p></section>
+
+<section><h2>Результаты клиентов</h2>
+<div class="carousel">
+  <div class="carousel-item"><img src="before_after1.png"><p>12 кг мышечной массы за 2,5 года</p></div>
+  <div class="carousel-item"><img src="before_after2.png"><p>-5 кг за месяц</p></div>
+  <div class="carousel-item"><img src="before_after3.png"><p>-2 кг жира, +1.5 кг мышц за 3 месяца</p></div>
+</div>
+<p style="opacity: 0.6; font-size: 0.9rem;">Свайпай влево / вправо</p>
+</section>
+
+<section><h2>Довольных клиентов</h2>
+<p>Каждый из них — с результатом. Следующий можешь быть ты.</p>
+<div class="counter" id="clientCount">36</div></section>
+
+<section><h2>Готов начать?</h2>
+<p>Напиши мне или оставь заявку — и начнём уже сегодня.</p>
+<div class="buttons">
+  <a href="https://t.me/GlebTsinker" class="telegram" target="_blank"><i class="bi bi-telegram"></i> Telegram</a>
+  <a href="https://docs.google.com/forms/d/1oyz_2E2w8_dSLMUQlNk0MsynqsqXT80NncpXkcuJHqM/edit?pli=1" class="form" target="_blank"><i class="bi bi-pencil-square"></i> Заполнить анкету</a>
+</div>
+</section>
+
+<footer>
+  © 2025 Глеб Цинкер. Санкт-Петербург · Online worldwide
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll("section").forEach(s => observer.observe(s));
+
+  const counter = document.getElementById("clientCount");
+  if (counter) {
+    let count = 0;
+    const target = 186;
+    const speed = 30;
+    let animated = false;
+    window.addEventListener("scroll", () => {
+      const top = counter.getBoundingClientRect().top;
+      if (!animated && top < window.innerHeight) {
+        animated = true;
+        const updateCount = () => {
+          if (count < target) {
+            count += Math.ceil((target - count) / 10);
+            counter.innerText = count;
+            setTimeout(updateCount, speed);
+          } else {
+            counter.innerText = target;
+          }
+        };
+        updateCount();
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
